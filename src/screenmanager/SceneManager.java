@@ -19,16 +19,22 @@ public class SceneManager extends Scene {
 	private static SceneManager scene;
 	private StackPane mainPane;
 	private Map<String, Pane> screens;
-	private String currScreen; 
 
 	private SceneManager(double width, double height) {
 		super(new StackPane(), width, height);
 		this.mainPane = (StackPane) this.getRoot();
 		// setup hashmap screen, screens.
 		this.screens = new HashMap<String, Pane>();
-		this.currScreen = "";
 	}
 	
+	/**
+	 * Gets the provided instance. Create a singleton instance, however, there are future looks to making
+	 * the scenemanager an abstract factory pattern, or have the ability to create multiple instances of
+	 * the Scene.
+	 * @param width
+	 * @param height
+	 * @return
+	 */
 	public static SceneManager getInstance(double width, double height) {
 		if (scene == null) scene = new SceneManager(width, height);
 		
@@ -38,46 +44,30 @@ public class SceneManager extends Scene {
 	// functions
 	
 	/**
-	 * Adds a screen, based on string and pane. If there are no current screens, it'll assume this is the current screen. If there are screens,
-	 * it will add the screen. If the screen exists, then it'll replace the screen.
+	 * Adds a screen, based on the parameters given. Note that if the current screen already exists, it 
+	 * will replace the existing one with a new one! So please be careful.
 	 * @param key - String Value
 	 * @param value - Pane Object.
 	 * @author Johnny Nguyen
 	 */
 	public void addScreen(String key, Pane value) {
-		// If there are no screens, we are by default setting the added screen as the main screen.
-		if (this.screens.isEmpty()) {
-			currScreen = key;
-			this.screens.put(currScreen, value);
-			this.mainPane.getChildren().add(screens.get(currScreen));
-		} else {
-			// if screens still exist, we just add
-			this.screens.put(key, value);
-		}
+		this.screens.put(key, value);
 	}
 	
 	/**
-	 * Gets the current screen
-	 * @return Pane object
+	 * Sets the screen as the main screen.
+	 * @param key value for hashmap
+	 * @return true if screen is successful.
 	 */
-	public Pane getCurrentScreen() {
-		return screens.get(currScreen);
-	}
-	
-	/**
-	 * Switches current Screen to new screen specified by the argument.
-	 * @param key - String key to get
-	 * @author Johnny Nguyen
-	 */
-	public void switchScreen(String key) {
-		// if the current get is not null, then we know it's there
-		if (this.screens.get(key) != null) {
-			// clear the screen, and show the other one
-			this.mainPane.getChildren().clear();
-			// set current screen and add 
-			currScreen = key;
-			this.mainPane.getChildren().add(this.screens.get(currScreen));
+	public boolean setScreen(String key) {
+		// tests to see if the key actually exists before beginning
+		if (screens.get(key) != null) {
+			// make a check if the current children is empty or not.
+			if (!mainPane.getChildren().isEmpty()) mainPane.getChildren().clear();
+			// now set this as the screen.
+			mainPane.getChildren().add(screens.get(key));
 		}
+		return false;
 	}
 	
 	/**
