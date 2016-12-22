@@ -3,6 +3,8 @@ package screenmanager;
 import java.util.HashMap;
 import java.util.Map;
 
+import animation.AnimPane;
+import animation.AnimType;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -16,15 +18,20 @@ import javafx.scene.layout.StackPane;
  *
  */
 public class SceneManager extends Scene {
+	// one instance
 	private static SceneManager scene;
+	// private variables
 	private StackPane mainPane;
 	private Map<String, Pane> screens;
+	private AnimPane[] animTransition;
 
 	private SceneManager(double width, double height) {
 		super(new StackPane(), width, height);
 		this.mainPane = (StackPane) this.getRoot();
 		// setup hashmap screen, screens.
 		this.screens = new HashMap<String, Pane>();
+		// initialize empty transition
+		animTransition = new AnimPane[2];
 	}
 	
 	/**
@@ -77,5 +84,16 @@ public class SceneManager extends Scene {
 	 */
 	public void removeScreen(String key) {
 		this.screens.remove(key);
+	}
+	
+	/**
+	 * Creates an animation/transition between two panes, in javafx.
+	 * @param enter - An animation to enter into the pane.
+	 * @param exit - Animation when exiting the previous pane.
+	 * @return 
+	 */
+	public void overrideTransition(AnimPane enter, AnimPane exit) {
+		animTransition[0] = enter;
+		animTransition[1] = exit;
 	}
 }

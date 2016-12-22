@@ -5,6 +5,6 @@ package animation;
  * @author Johnny Nguyen
  *
  */
-public final class AnimPanes {
+public final class AnimPane {
 
 }
