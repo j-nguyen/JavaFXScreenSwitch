@@ -28,4 +28,8 @@ public class Anim {
 		anim = null;
 		node = null;
 	}
+
+	public boolean isAnimation() {
+		return anim != null;
+	}
 }

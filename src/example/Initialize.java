@@ -1,5 +1,6 @@
 package example;
 
+import animation.AnimType;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -20,7 +21,10 @@ public class Initialize extends Application {
 		SceneManager scene = SceneManager.getInstance(800, 600);
 		// random Button to show-case switching screens
 		Button btn1 = new Button("Switch Screen");
-		btn1.setOnAction(e -> scene.setScreen("Pane 2"));
+		btn1.setOnAction(e -> {
+			scene.overrideTransition(AnimType.FADE);
+			scene.setScreen("Pane 2");
+		});
 		Button btn2 = new Button("Switch Screen");
 		btn2.setOnAction(e -> scene.setScreen("Pane 1"));
 		// Random Pane

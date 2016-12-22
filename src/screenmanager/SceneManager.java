@@ -24,7 +24,7 @@ public class SceneManager extends Scene {
 	// private variables
 	private StackPane mainPane;
 	private Map<String, Pane> screens;
-	private Anim animEnter, animExit;
+	private Anim transition;
 
 	private SceneManager(double width, double height) {
 		super(new StackPane(), width, height);
@@ -32,8 +32,7 @@ public class SceneManager extends Scene {
 		// setup hashmap screen, screens.
 		this.screens = new HashMap<String, Pane>();
 		// set-up animations
-		animEnter = new Anim();
-		animExit = new Anim();
+		transition = new Anim();
 	}
 	
 	/**
@@ -74,18 +73,21 @@ public class SceneManager extends Scene {
 			// make a check if the current children is empty or not.
 			if (!mainPane.getChildren().isEmpty()) {
 				// here we create an animation for exiting the pane, before clearing				
-				mainPane.getChildren().clear();
+				mainPane.getChildren().remove(0); // removes existing screen
 				// we know this is the default to set primarily.
 				mainPane.getChildren().add(screens.get(key));
-				// return true
+				// add animation here
+				if (transition.isAnimation()) {
+					System.out.println("Starting animation");
+					// get the new screen
+					transition.setNode(screens.get(key));
+					// fade in
+					transition.animate();
+				}
 				return true;
 			} else {
 				// set the enter anim node
-				animEnter.setNode(screens.get(key));
-				animExit.setNode(mainPane.getChildren().get(0));
-				// create animation
-				animEnter.animate();
-				animExit.animate();
+				mainPane.getChildren().add(screens.get(key));
 				return true;
 			}
 		}
@@ -106,8 +108,7 @@ public class SceneManager extends Scene {
 	 * @param enter - An animation to enter into the pane.
 	 * @param exit - Animation when exiting the previous pane.
 	 */
-	public void overrideTransition(AnimType enter, AnimType exit) {
-		animEnter.setAnimation(enter);
-		animExit.setAnimation(exit);
+	public void overrideTransition(AnimType animType) {
+		transition.setAnimation(animType);
 	}
 }
