@@ -42,6 +42,7 @@ public class Initialize extends Application {
 		primaryStage.setResizable(false);
 		primaryStage.setTitle("JavaFX Screen Switch");
 		primaryStage.show();
+		
 	}
 
 	public static void main(String[] args) {

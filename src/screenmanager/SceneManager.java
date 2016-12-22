@@ -3,8 +3,9 @@ package screenmanager;
 import java.util.HashMap;
 import java.util.Map;
 
-import animation.AnimPane;
+import animation.Anim;
 import animation.AnimType;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -14,7 +15,7 @@ import javafx.scene.layout.StackPane;
  * We are not switching 'screens' by scenes, but rather switching out by panes. This is the Manager in which its only purpose
  * is to create the scene, and the screen controller.
  * @author Johnny Nguyen
- * @version 1.0.0
+ * @version 1.0.1
  *
  */
 public class SceneManager extends Scene {
@@ -23,15 +24,16 @@ public class SceneManager extends Scene {
 	// private variables
 	private StackPane mainPane;
 	private Map<String, Pane> screens;
-	private AnimPane[] animTransition;
+	private Anim animEnter, animExit;
 
 	private SceneManager(double width, double height) {
 		super(new StackPane(), width, height);
 		this.mainPane = (StackPane) this.getRoot();
 		// setup hashmap screen, screens.
 		this.screens = new HashMap<String, Pane>();
-		// initialize empty transition
-		animTransition = new AnimPane[2];
+		// set-up animations
+		animEnter = new Anim();
+		animExit = new Anim();
 	}
 	
 	/**
@@ -62,7 +64,7 @@ public class SceneManager extends Scene {
 	}
 	
 	/**
-	 * Sets the screen as the main screen.
+	 * Sets the screen as the main screen. This can be used for switching screens.
 	 * @param key value for hashmap
 	 * @return true if screen is successful.
 	 */
@@ -70,9 +72,22 @@ public class SceneManager extends Scene {
 		// tests to see if the key actually exists before beginning
 		if (screens.get(key) != null) {
 			// make a check if the current children is empty or not.
-			if (!mainPane.getChildren().isEmpty()) mainPane.getChildren().clear();
-			// now set this as the screen.
-			mainPane.getChildren().add(screens.get(key));
+			if (!mainPane.getChildren().isEmpty()) {
+				// here we create an animation for exiting the pane, before clearing				
+				mainPane.getChildren().clear();
+				// we know this is the default to set primarily.
+				mainPane.getChildren().add(screens.get(key));
+				// return true
+				return true;
+			} else {
+				// set the enter anim node
+				animEnter.setNode(screens.get(key));
+				animExit.setNode(mainPane.getChildren().get(0));
+				// create animation
+				animEnter.animate();
+				animExit.animate();
+				return true;
+			}
 		}
 		return false;
 	}
@@ -90,10 +105,9 @@ public class SceneManager extends Scene {
 	 * Creates an animation/transition between two panes, in javafx.
 	 * @param enter - An animation to enter into the pane.
 	 * @param exit - Animation when exiting the previous pane.
-	 * @return 
 	 */
-	public void overrideTransition(AnimPane enter, AnimPane exit) {
-		animTransition[0] = enter;
-		animTransition[1] = exit;
+	public void overrideTransition(AnimType enter, AnimType exit) {
+		animEnter.setAnimation(enter);
+		animExit.setAnimation(exit);
 	}
 }
