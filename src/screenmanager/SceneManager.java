@@ -32,7 +32,7 @@ public class SceneManager extends Scene {
 		// setup hashmap screen, screens.
 		this.screens = new HashMap<String, Pane>();
 		// set-up animations
-		transition = new Anim();
+		this.transition = new Anim();
 	}
 	
 	/**
@@ -78,7 +78,6 @@ public class SceneManager extends Scene {
 				mainPane.getChildren().add(screens.get(key));
 				// add animation here
 				if (transition.isAnimation()) {
-					System.out.println("Starting animation");
 					// get the new screen
 					transition.setNode(screens.get(key));
 					// fade in
@@ -108,7 +107,7 @@ public class SceneManager extends Scene {
 	 * @param enter - An animation to enter into the pane.
 	 * @param exit - Animation when exiting the previous pane.
 	 */
-	public void overrideTransition(AnimType animType) {
+	public void setAnimation(AnimType animType) {
 		transition.setAnimation(animType);
 	}
 }

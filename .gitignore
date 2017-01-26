@@ -11,6 +11,9 @@ local.properties
 .loadpath
 .recommenders
 
+# remove the example too
+src/example/
+
 # Eclipse Core
 .project
 
