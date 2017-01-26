@@ -24,6 +24,7 @@ public class GameScreen extends Pane {
 					
 				}
 			});
+			
 			scene.setScreen("Pane 2");
 		});	
 		
