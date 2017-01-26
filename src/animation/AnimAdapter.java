@@ -7,6 +7,6 @@ import javafx.scene.Node;
  * @author Johnny Nguyen
  *
  */
-public interface IAnim {
+public interface AnimAdapter {
 	public void animate(Node node);
 }

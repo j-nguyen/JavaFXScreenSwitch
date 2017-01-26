@@ -5,7 +5,8 @@ import java.util.Map;
 
 import animation.Anim;
 import animation.AnimType;
-import javafx.scene.Node;
+import animation.FadeAnimation;
+import animation.AnimAdapter;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -25,6 +26,7 @@ public class SceneManager extends Scene {
 	private StackPane mainPane;
 	private Map<String, Pane> screens;
 	private Anim transition;
+	private AnimType animType;
 
 	private SceneManager(double width, double height) {
 		super(new StackPane(), width, height);
@@ -108,6 +110,17 @@ public class SceneManager extends Scene {
 	 * @param exit - Animation when exiting the previous pane.
 	 */
 	public void setAnimation(AnimType animType) {
-		transition.setAnimation(animType);
+		switch (animType) {
+			case FADE:
+				transition.setAnimation(new FadeAnimation());
+		}
+	}
+	
+	/**
+	 * Supports a custom animation if you'd like to create a custom animation
+	 * @param anim
+	 */
+	public void setAnimation(AnimAdapter anim) {
+		transition.setAnimation(anim);
 	}
 }

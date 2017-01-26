@@ -8,8 +8,8 @@ import javafx.scene.Node;
  *
  */
 public class Anim {
-	// others
-	private IAnim anim;
+	// instantiate variables
+	private AnimAdapter anim;
 	private Node node;
 	
 	public Anim() {}
@@ -18,7 +18,7 @@ public class Anim {
 		this.node = node;
 	}
 	
-	public void setAnimation(IAnim anim) {
+	public void setAnimation(AnimAdapter anim) {
 		this.anim = anim;
 	}
 	
